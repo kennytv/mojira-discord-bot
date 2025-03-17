@@ -1,4 +1,5 @@
 import { EmbedBuilder } from 'discord.js';
+import axios from 'axios';
 import MojiraBot from '../MojiraBot.js';
 import { Mention } from './Mention.js';
 
@@ -18,12 +19,15 @@ export class MultipleMention extends Mention {
 
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		let searchResults: any;
+		const projectPrefix = this.tickets[0].split( '-' )[ 0 ];
 
 		try {
-			searchResults = await MojiraBot.jira.issueSearch.searchForIssuesUsingJql( {
-				jql: `id IN (${ this.tickets.join( ',' ) }) ORDER BY key ASC`,
-				maxResults: 10,
-				fields: [ 'key', 'summary' ],
+			searchResults = await axios.post( MojiraBot.apiUrl, {
+				'advanced': true,
+				'project': projectPrefix,
+				'search': `key IN (${ this.tickets.join( ',' ) }) ORDER BY key ASC`,
+				'maxResults': 10,
+				'fields': ['key', 'summary'],
 			} );
 		} catch ( err ) {
 			let ticketList = this.tickets.join( ', ' );

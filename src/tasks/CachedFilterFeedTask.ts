@@ -5,6 +5,7 @@ import log4js from 'log4js';
 import Task from './Task.js';
 import { NewsUtil } from '../util/NewsUtil.js';
 import MojiraBot from '../MojiraBot.js';
+import axios from 'axios';
 
 export default class CachedFilterFeedTask extends Task {
 	private static logger = log4js.getLogger( 'CachedFilterFeedTask' );
@@ -37,13 +38,14 @@ export default class CachedFilterFeedTask extends Task {
 	protected async init(): Promise<void> {
 		this.lastRun = new Date().valueOf();
 
-		const searchResults = await MojiraBot.jira.issueSearch.searchForIssuesUsingJql( {
+		// TODO fix request
+		const searchResults = await axios.post( MojiraBot.apiUrl, {
 			jql: this.jql.replace( CachedFilterFeedTask.lastRunRegex, this.lastRun.toString() ),
 			fields: ['key'],
 		} );
 
-		if ( searchResults.issues ) {
-			for ( const result of searchResults.issues ) {
+		if ( searchResults.data.issues ) {
+			for ( const result of searchResults.data.issues ) {
 				this.knownTickets.add( result.key );
 			}
 		}
@@ -53,17 +55,17 @@ export default class CachedFilterFeedTask extends Task {
 		let upcomingTickets: string[];
 
 		try {
-			const searchResults = await MojiraBot.jira.issueSearch.searchForIssuesUsingJql( {
+			const searchResults = await axios.post( MojiraBot.apiUrl, {
 				jql: this.jql.replace( CachedFilterFeedTask.lastRunRegex, this.lastRun.toString() ),
 				fields: ['key'],
 			} );
 
-			if ( !searchResults.issues ) {
+			if ( !searchResults.data.issues ) {
 				CachedFilterFeedTask.logger.error( `[${ this.id }] Error: no issues returned by JIRA` );
 				return;
 			}
 
-			upcomingTickets = searchResults.issues.map( ( { key } ) => key );
+			upcomingTickets = searchResults.data.issues.map( ( { key } ) => key );
 		} catch ( err ) {
 			CachedFilterFeedTask.logger.error( `[${ this.id }] Error when searching for issues`, err );
 			return;
@@ -72,15 +74,15 @@ export default class CachedFilterFeedTask extends Task {
 		if ( this.jqlRemoved !== undefined ) {
 			try {
 				const ticketKeys = Array.from( this.knownTickets );
-				const previousTicketResults = await MojiraBot.jira.issueSearch.searchForIssuesUsingJql( {
+				const previousTicketResults = await axios.post( MojiraBot.apiUrl, {
 					jql: `${ this.jqlRemoved.replace( CachedFilterFeedTask.lastRunRegex, this.lastRun.toString() ) } AND key in (${ ticketKeys.join( ',' ) })`,
 					fields: ['key'],
 				} );
 
 				let removableTickets: string[] = [];
 
-				if ( previousTicketResults?.issues ) {
-					removableTickets = previousTicketResults.issues.map( ( { key } ) => key );
+				if ( previousTicketResults?.data.issues ) {
+					removableTickets = previousTicketResults.data.issues.map( ( { key } ) => key );
 				} else {
 					CachedFilterFeedTask.logger.debug( 'No issues returned by JIRA' );
 				}

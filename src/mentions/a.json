@@ -1,0 +1,148 @@
+{
+  "expand": "names,schema",
+  "startAt": 0,
+  "maxResults": 1,
+  "total": 1,
+  "issues": [{
+    "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+    "id": "237804",
+    "self": "https://mojira.atlassian.net/rest/api/3/issue/237804",
+    "key": "MC-295432",
+    "renderedFields": {
+      "summary": null,
+      "watches": null,
+      "issuetype": null,
+      "customfield_10070": null,
+      "created": "Today 9:16 AM",
+      "customfield_10061": "",
+      "customfield_10050": "",
+      "customfield_10051": null,
+      "description": "<p>As shown in image 1, you can see the almost complete structure for spawning an iron golem. However, if, before placing the pumpkin, you place a \"block,\" such as, in this case, short grass, right next to the iron block that is in contact with the ground, the golem will not appear as shown in the second image, even though the pumpkin is already in place. However, if you simply remove the short grass and replace the pumpkin, as long as the iron structure is in a clear area, the golem will spawn without any problems</p>\n\n<p>I think that this issue it's not necessarily a bug, because I can understand that a block \"stuck\" in the way can prevent the golem from spawning, but it's also true that there can be decisive moments that are affected by something as simple as some short grass that was right next to the iron blocks</p>\n\n<p>Whether it's a bug or intentional, I wanted to write this report anyway</p>",
+      "customfield_10054": null,
+      "fixVersions": null,
+      "customfield_10055": null,
+      "resolution": null,
+      "customfield_10047": null,
+      "labels": null,
+      "customfield_10048": null,
+      "customfield_10049": null,
+      "versions": null,
+      "resolutiondate": null,
+      "issuelinks": null,
+      "updated": "Today 9:29 AM",
+      "status": null
+    },
+    "fields": {
+      "summary": "Certain \"blocks\" do not allow me to spawn an iron golem",
+      "watches": {
+        "self": "https://mojira.atlassian.net/rest/api/3/issue/MC-295432/watchers",
+        "watchCount": 0,
+        "isWatching": false
+      },
+      "issuetype": {
+        "self": "https://mojira.atlassian.net/rest/api/3/issuetype/10006",
+        "id": "10006",
+        "description": "A problem which impairs or prevents the functions of the product. (Migrated on 23 Jan 2025 19:08 UTC)",
+        "iconUrl": "https://mojira.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium",
+        "name": "Bug",
+        "subtask": false,
+        "avatarId": 10303,
+        "hierarchyLevel": 0
+      },
+      "customfield_10070": null,
+      "created": "2025-03-17T09:16:51.876-0700",
+      "customfield_10061": null,
+      "customfield_10050": null,
+      "customfield_10051": null,
+      "description": {
+        "type": "doc",
+        "version": 1,
+        "content": [{
+          "type": "paragraph",
+          "content": [{
+            "type": "text",
+            "text": "As shown in image 1, you can see the almost complete structure for spawning an iron golem. However, if, before placing the pumpkin, you place a \"block,\" such as, in this case, short grass, right next to the iron block that is in contact with the ground, the golem will not appear as shown in the second image, even though the pumpkin is already in place. However, if you simply remove the short grass and replace the pumpkin, as long as the iron structure is in a clear area, the golem will spawn without any problems"
+          }]
+        }, {
+          "type": "paragraph",
+          "content": [{
+            "type": "text",
+            "text": "I think that this issue it's not necessarily a bug, because I can understand that a block \"stuck\" in the way can prevent the golem from spawning, but it's also true that there can be decisive moments that are affected by something as simple as some short grass that was right next to the iron blocks"
+          }]
+        }, {
+          "type": "paragraph",
+          "content": [{
+            "type": "text",
+            "text": "Whether it's a bug or intentional, I wanted to write this report anyway"
+          }]
+        }]
+      },
+      "customfield_10054": {
+        "self": "https://mojira.atlassian.net/rest/api/3/customFieldOption/10020",
+        "value": "Unconfirmed",
+        "id": "10020"
+      },
+      "fixVersions": [],
+      "customfield_10055": [{
+        "self": "https://mojira.atlassian.net/rest/api/3/customFieldOption/10028",
+        "value": "(Unassigned)",
+        "id": "10028"
+      }],
+      "resolution": null,
+      "customfield_10047": null,
+      "labels": [],
+      "customfield_10048": null,
+      "customfield_10049": null,
+      "versions": [{
+        "self": "https://mojira.atlassian.net/rest/api/3/version/12133",
+        "id": "12133",
+        "description": "",
+        "name": "1.21.4",
+        "archived": false,
+        "released": true,
+        "releaseDate": "2024-12-03"
+      }],
+      "resolutiondate": null,
+      "issuelinks": [],
+      "updated": "2025-03-17T09:29:07.054-0700",
+      "status": {
+        "self": "https://mojira.atlassian.net/rest/api/3/status/1",
+        "description": "The issue is open and ready for the assignee to start work on it.",
+        "iconUrl": "https://mojira.atlassian.net/images/icons/statuses/open.png",
+        "name": "Open",
+        "id": "1",
+        "statusCategory": {
+          "self": "https://mojira.atlassian.net/rest/api/3/statuscategory/2",
+          "id": 2,
+          "key": "new",
+          "colorName": "blue-gray",
+          "name": "To Do"
+        }
+      }
+    }
+  }],
+  "names": {
+    "summary": "Summary",
+    "watches": "Watchers",
+    "issuetype": "Issue Type",
+    "customfield_10070": "Votes Count",
+    "created": "Created",
+    "customfield_10061": "Operating System Version",
+    "customfield_10050": "ADO",
+    "customfield_10051": "Area",
+    "description": "Description",
+    "customfield_10054": "Confirmation Status",
+    "fixVersions": "Fix versions",
+    "customfield_10055": "Category",
+    "resolution": "Resolution",
+    "customfield_10047": "CHK",
+    "labels": "Labels",
+    "customfield_10048": "Game Mode",
+    "customfield_10049": "Mojang Priority",
+    "versions": "Affects versions",
+    "resolutiondate": "Resolved",
+    "issuelinks": "Linked Issues",
+    "updated": "Updated",
+    "status": "Status"
+  }
+}

@@ -3,6 +3,7 @@ import SlashCommand from './commandHandlers/SlashCommand.js';
 import BotConfig from '../BotConfig.js';
 import MojiraBot from '../MojiraBot.js';
 import { ChannelConfigUtil } from '../util/ChannelConfigUtil.js';
+import axios from 'axios';
 
 export default class SearchCommand extends SlashCommand {
 	public readonly slashCommandBuilder = this.slashCommandBuilder
@@ -22,13 +23,13 @@ export default class SearchCommand extends SlashCommand {
 		try {
 			const embed = new EmbedBuilder();
 			const searchFilter = `text ~ "${ plainArgs }" AND project in (${ BotConfig.projects.join( ', ' ) })`;
-			const searchResults = await MojiraBot.jira.issueSearch.searchForIssuesUsingJql( {
-				jql: searchFilter,
+			const searchResults = await axios.post( MojiraBot.apiUrl, {
+				search: searchFilter,
 				maxResults: BotConfig.maxSearchResults,
 				fields: [ 'key', 'summary' ],
 			} );
 
-			if ( !searchResults.issues ) {
+			if ( !searchResults.data.issues ) {
 				embed.setTitle( `No results found for "${ escapeMarkdown( plainArgs ) }"` );
 				await interaction.reply( { embeds: [embed], ephemeral: true } );
 				return true;
@@ -37,7 +38,7 @@ export default class SearchCommand extends SlashCommand {
 			embed.setTitle( '**Results:**' );
 			embed.setFooter( { text: interaction.user.tag, iconURL: interaction.user.avatarURL() ?? undefined } );
 
-			for ( const issue of searchResults.issues ) {
+			for ( const issue of searchResults.data.issues ) {
 				embed.addFields( {
 					name: issue.key,
 					value: `[${ issue.fields.summary }](https://bugs.mojang.com/browse/${ issue.key })`,

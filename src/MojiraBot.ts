@@ -1,6 +1,5 @@
 import { Client, ClientUser, FetchMessagesOptions, GatewayIntentBits, Message, Partials, Snowflake, TextChannel } from 'discord.js';
 import log4js from 'log4js';
-import { Version2Client as JiraClient } from 'jira.js';
 import BotConfig from './BotConfig.js';
 import ErrorEventHandler from './events/discord/ErrorEventHandler.js';
 import EventRegistry from './events/EventRegistry.js';
@@ -56,11 +55,10 @@ export default class MojiraBot {
 			parse: ['users'],
 		},
 	} );
+	public static apiUrl = 'https://bugs.mojang.com/api/jql-search-post';
 
 	private static running = false;
 	private static botUser: ClientUser;
-
-	public static jira: JiraClient;
 
 	public static async start(): Promise<void> {
 		if ( this.running ) {
@@ -82,7 +80,6 @@ export default class MojiraBot {
 		} );
 
 		try {
-			BotConfig.jiraLogin();
 			const loginResult = await BotConfig.login( this.client );
 			if ( !loginResult || !this.client.user ) return;
 

@@ -5,7 +5,7 @@ import { NewsUtil } from '../util/NewsUtil.js';
 import MojiraBot from '../MojiraBot.js';
 import Task from './Task.js';
 import { LoggerUtil } from '../util/LoggerUtil.js';
-import { Version } from 'jira.js/out/version2/models';
+import axios from 'axios';
 
 interface JiraVersion {
 	id: string;
@@ -16,7 +16,7 @@ interface JiraVersion {
 	projectId: number | string;
 }
 
-function versionConv( version: Version ): JiraVersion | undefined {
+function versionConv( version ): JiraVersion | undefined {
 	if (
 		version.id === undefined
 		|| version.name === undefined
@@ -74,12 +74,12 @@ export default class VersionFeedTask extends Task {
 	protected async init(): Promise<void> {
 		try {
 			for ( const project of this.projects ) {
-				const results = await MojiraBot.jira.projectVersions.getProjectVersions( {
+				const results = await axios.post( MojiraBot.apiUrl, {
 					projectIdOrKey: project.name,
 					expand: 'id,name,archived,released',
 				} );
 
-				for ( const value of results ) {
+				for ( const value of results.data ) {
 					const version = versionConv( value );
 					if ( version !== undefined ) this.cachedVersions[version.id] = version;
 				}
@@ -124,7 +124,7 @@ export default class VersionFeedTask extends Task {
 	}
 
 	private async getVersionChangesForProject( project: string ): Promise<JiraVersionChange[]> {
-		const results = await MojiraBot.jira.projectVersions.getProjectVersionsPaginated( {
+		const results = await axios.post( MojiraBot.apiUrl, {
 			projectIdOrKey: project,
 			maxResults: this.scope,
 			orderBy: '-sequence',
@@ -133,9 +133,9 @@ export default class VersionFeedTask extends Task {
 		const changes: JiraVersionChange[] = [];
 
 		// VersionFeedTask.logger.debug( `[${ this.id }] Received ${ results.values?.length } versions for project ${ project }` );
-		if ( !results.values ) return changes;
+		if ( !results.data.values ) return changes;
 
-		for ( const value of results.values ) {
+		for ( const value of results.data.values ) {
 			try {
 				const version = versionConv( value );
 				if ( version === undefined ) continue;
@@ -226,7 +226,7 @@ export default class VersionFeedTask extends Task {
 		};
 
 		try {
-			versionIssueCounts = await MojiraBot.jira.projectVersions.getVersionRelatedIssues( {
+			versionIssueCounts = await axios.post( MojiraBot.apiUrl, {
 				id: version.id,
 			} );
 		} catch ( error ) {

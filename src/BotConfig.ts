@@ -1,5 +1,4 @@
 import { Client, ColorResolvable, Snowflake } from 'discord.js';
-import { Version2Client as JiraClient } from 'jira.js';
 import config from 'config';
 import MojiraBot from './MojiraBot.js';
 import Sqlite3 from 'better-sqlite3';
@@ -115,8 +114,6 @@ export default class BotConfig {
 	public static logDirectory: false | string;
 
 	private static token: string;
-	private static jiraPat?: string;
-	private static jiraUser?: string;
 
 	public static owners: Snowflake[];
 
@@ -150,8 +147,6 @@ export default class BotConfig {
 		this.logDirectory = getOrDefault( 'logDirectory', false );
 
 		this.token = config.get( 'token' );
-		this.jiraUser = getOrDefault( 'jiraUser', undefined );
-		this.jiraPat = getOrDefault( 'jiraPat', undefined );
 
 		this.owners = getOrDefault( 'owners', [] );
 
@@ -191,18 +186,5 @@ export default class BotConfig {
 			return false;
 		}
 		return true;
-	}
-
-	public static jiraLogin(): void {
-		// TODO: integrate newErrorHandling from Jira.js
-		MojiraBot.jira = new JiraClient( {
-			host: 'https://mojira.atlassian.net',
-			authentication: this.jiraPat === undefined || this.jiraUser === undefined ? undefined : {
-				basic: {
-					email: this.jiraUser,
-					apiToken: this.jiraPat,
-				},
-			},
-		} );
 	}
 }

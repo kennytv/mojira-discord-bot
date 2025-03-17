@@ -1,0 +1,99 @@
+[{
+  "self": "https://mojira.atlassian.net/rest/api/3/issue/237804/comment/1041241",
+  "id": "1041241",
+  "author": {
+    "avatarUrls": {
+      "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/default-avatar.png",
+      "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/default-avatar.png",
+      "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/default-avatar.png",
+      "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/default-avatar.png"
+    },
+    "displayName": "Nicolás Janus",
+    "active": true,
+    "timeZone": "America/Los_Angeles",
+    "accountType": "customer"
+  },
+  "body": {
+    "type": "doc",
+    "version": 1,
+    "content": [{
+      "type": "mediaGroup",
+      "content": [{
+        "type": "media",
+        "attrs": {
+          "type": "file",
+          "id": "9592a977-aca8-4a15-a0ae-2e9358bff53d",
+          "collection": ""
+        }
+      }]
+    }, {
+      "type": "mediaGroup",
+      "content": [{
+        "type": "media",
+        "attrs": {
+          "type": "file",
+          "id": "9f845471-8062-4d71-83b5-d3cda7392435",
+          "collection": ""
+        }
+      }]
+    }]
+  },
+  "renderedBody": "<div><p>This comment contained an image attachment, please login to view the attachment.</p></div>\n\n<div><p>This comment contained an image attachment, please login to view the attachment.</p></div>",
+  "updateAuthor": {
+    "avatarUrls": {
+      "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/default-avatar.png",
+      "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/default-avatar.png",
+      "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/default-avatar.png",
+      "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/default-avatar.png"
+    },
+    "displayName": "Nicolás Janus",
+    "active": true,
+    "timeZone": "America/Los_Angeles",
+    "accountType": "customer"
+  },
+  "created": "2025-03-17T09:16:52.764-0700",
+  "updated": "2025-03-17T09:16:52.764-0700",
+  "jsdPublic": true
+}, {
+  "self": "https://mojira.atlassian.net/rest/api/3/issue/237804/comment/1043123",
+  "id": "1043123",
+  "author": {
+    "avatarUrls": {
+      "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/default-avatar.png",
+      "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/default-avatar.png",
+      "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/default-avatar.png",
+      "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/default-avatar.png"
+    },
+    "displayName": "MrMuskle",
+    "active": true,
+    "timeZone": "Etc/GMT",
+    "accountType": "customer"
+  },
+  "body": {
+    "type": "doc",
+    "version": 1,
+    "content": [{
+      "type": "paragraph",
+      "content": [{
+        "type": "text",
+        "text": "This ticket duplicates MC-60792"
+      }]
+    }]
+  },
+  "renderedBody": "<div><p>This comment contained an image attachment, please login to view the attachment.</p></div>",
+  "updateAuthor": {
+    "avatarUrls": {
+      "48x48": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/default-avatar.png",
+      "24x24": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/default-avatar.png",
+      "16x16": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/default-avatar.png",
+      "32x32": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/default-avatar.png"
+    },
+    "displayName": "MrMuskle",
+    "active": true,
+    "timeZone": "Etc/GMT",
+    "accountType": "customer"
+  },
+  "created": "2025-03-17T09:29:07.054-0700",
+  "updated": "2025-03-17T09:29:07.054-0700",
+  "jsdPublic": true
+}]

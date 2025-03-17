@@ -1,8 +1,9 @@
+import axios from 'axios';
 import { EmbedBuilder, escapeMarkdown, TextBasedChannel } from 'discord.js';
-import MojiraBot from '../MojiraBot.js';
 import { MarkdownUtil } from '../util/MarkdownUtil.js';
 import { Mention } from './Mention.js';
 import { ChannelConfigUtil } from '../util/ChannelConfigUtil.js';
+import MojiraBot from '../MojiraBot.js';
 
 export class SingleMention extends Mention {
 	private ticket: string;
@@ -16,13 +17,28 @@ export class SingleMention extends Mention {
 	}
 
 	public async getEmbed(): Promise<EmbedBuilder> {
+		// Extract project prefix and ticket number
+		const projectPrefix = this.ticket.split( '-' )[0];
+
+		const requestBody = {
+			'advanced': true,
+			'project': projectPrefix,
+			'search': `key = ${ this.ticket }`,
+			'maxResults': 1,
+		};
+
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		let ticketResult: any;
 
 		try {
-			ticketResult = await MojiraBot.jira.issues.getIssue( {
-				issueIdOrKey: this.ticket,
-			} );
+			const response = await axios.post( MojiraBot.apiUrl, requestBody );
+
+			// Assuming the API returns issues in an array
+			if ( !response.data.issues || response.data.issues.length === 0 ) {
+				throw new Error( `${ this.ticket } doesn't seem to exist.` );
+			}
+
+			ticketResult = response.data.issues[0];
 		} catch ( err ) {
 			let errorMessage = `An error occurred while retrieving ticket ${ this.ticket }: ${ err.message }`;
 
@@ -65,7 +81,7 @@ export class SingleMention extends Mention {
 			}
 		}
 
-		let description = ticketResult.fields.description || '';
+		let description = ticketResult.renderedFields.description || '';
 
 		// unify line breaks
 		description = description.replace( /^\s*[\r\n]/gm, '\n' );
@@ -94,6 +110,10 @@ export class SingleMention extends Mention {
 
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		function findThumbnail( attachments: any[] ): string | undefined {
+			const dummy = true;
+			if ( dummy ) {
+				return undefined;
+			}
 			const allowedMimes = [
 				'image/png', 'image/jpeg',
 			];
@@ -110,8 +130,7 @@ export class SingleMention extends Mention {
 		}
 
 		if ( !ChannelConfigUtil.limitedInfo( this.channel ) ) {
-			embed.setAuthor( { name: ticketResult.fields.reporter.displayName, iconURL: ticketResult.fields.reporter.avatarUrls['48x48'], url: 'https://bugs.mojang.com/secure/ViewProfile.jspa?name=' + encodeURIComponent( ticketResult.fields.reporter.name ) } )
-				.addFields( { name: 'Status', value: status, inline: !largeStatus } );
+			embed.addFields( { name: 'Status', value: status, inline: !largeStatus } );
 
 			// Assigned to, Reported by, Created on, Category, Resolution, Resolved on, Since version, (Latest) affected version, Fixed version(s)
 
@@ -130,12 +149,12 @@ export class SingleMention extends Mention {
 			if ( ticketResult.fields.assignee ) {
 				embed.addFields( {
 					name: 'Assignee',
-					value: `[${ escapeMarkdown( ticketResult.fields.assignee.displayName ) }](https://bugs.mojang.com/secure/ViewProfile.jspa?name=${ encodeURIComponent( ticketResult.fields.assignee.name ) })`,
+					value: escapeMarkdown( ticketResult.fields.assignee.displayName ),
 					inline: true,
 				} );
 			}
 
-			if ( ticketResult.fields.votes.votes ) {
+			if ( ticketResult.fields.votes?.votes ) {
 				embed.addFields( {
 					name: 'Votes',
 					value: ticketResult.fields.votes.votes.toString(),
@@ -143,27 +162,11 @@ export class SingleMention extends Mention {
 				} );
 			}
 
-			if ( ticketResult.fields.comment.total ) {
+			// TODO From other endpoint
+			if ( ticketResult.fields.comment?.total ) {
 				embed.addFields( {
 					name: 'Comments',
 					value: ticketResult.fields.comment.total.toString(),
-					inline: true,
-				} );
-			}
-
-			const duplicates = ticketResult.fields.issuelinks.filter( relation => relation.type.id === '10102' && relation.inwardIssue );
-			if ( duplicates.length ) {
-				embed.addFields( {
-					name: 'Duplicates',
-					value: duplicates.length.toString(),
-					inline: true,
-				} );
-			}
-
-			if ( ticketResult.fields.creator.key !== ticketResult.fields.reporter.key ) {
-				embed.addFields( {
-					name: 'Creator',
-					value: `[${ escapeMarkdown( ticketResult.fields.creator.displayName ) }](https://bugs.mojang.com/secure/ViewProfile.jspa?name=${ encodeURIComponent( ticketResult.fields.creator.name ) })`,
 					inline: true,
 				} );
 			}

@@ -4,6 +4,7 @@ import BotConfig from '../BotConfig.js';
 import DiscordUtil from './DiscordUtil.js';
 import MentionCommand from '../commands/MentionCommand.js';
 import MojiraBot from '../MojiraBot.js';
+import axios from 'axios';
 
 interface OriginIds {
 	channelId: Snowflake;
@@ -107,13 +108,13 @@ export class RequestsUtil {
 	public static async checkTicketValidity( tickets: string[] ): Promise<boolean> {
 		try {
 			this.logger.debug( `Checking for ticket validity of tickets ${ tickets.join( ',' ) }` );
-			const searchResults = await MojiraBot.jira.issueSearch.searchForIssuesUsingJql( {
-				jql: `(${ BotConfig.request.invalidRequestJql }) AND key in (${ tickets.join( ',' ) })`,
+			const searchResults = await axios.post( MojiraBot.apiUrl, {
+				search: `(${ BotConfig.request.invalidRequestJql }) AND key in (${ tickets.join( ',' ) })`,
 				fields: ['key'],
 			} );
-			if ( searchResults.issues === undefined ) return false;
+			if ( searchResults.data.issues === undefined ) return false;
 
-			const invalidTickets = searchResults.issues.map( ( { key } ) => key );
+			const invalidTickets = searchResults.data.issues.map( ( { key } ) => key );
 			this.logger.debug( `Invalid tickets: [${ invalidTickets.join( ',' ) }]` );
 			return invalidTickets.length === 0;
 		} catch ( err ) {

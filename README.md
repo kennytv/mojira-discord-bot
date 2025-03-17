@@ -95,7 +95,6 @@ This project depends on the following projects, thanks to every developer who ma
 
 - [discord.js](https://github.com/discordjs/discord.js/)
 - [ESLint](https://github.com/eslint/eslint)
-- [jira.js](https://github.com/MrRefactoring/jira.js)
 - [JS-YAML](https://github.com/nodeca/js-yaml)
 - [log4js](https://github.com/log4js-node/log4js-node)
 - [node-config](https://github.com/lorenwest/node-config)

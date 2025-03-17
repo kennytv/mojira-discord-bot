@@ -6,6 +6,7 @@ import Task from './Task.js';
 import { NewsUtil } from '../util/NewsUtil.js';
 import MojiraBot from '../MojiraBot.js';
 import { LoggerUtil } from '../util/LoggerUtil.js';
+import axios from 'axios';
 
 export default class FilterFeedTask extends Task {
 	private static logger = log4js.getLogger( 'FilterFeedTask' );
@@ -39,17 +40,18 @@ export default class FilterFeedTask extends Task {
 		let unknownTickets: string[];
 
 		try {
-			const searchResults = await MojiraBot.jira.issueSearch.searchForIssuesUsingJql( {
+			// TODO fix request
+			const searchResults = await axios.post( MojiraBot.apiUrl, {
 				jql: this.jql.replace( FilterFeedTask.lastRunRegex, this.lastRun.toString() ),
 				fields: ['key'],
 			} );
 
-			if ( !searchResults.issues ) {
+			if ( !searchResults.data.issues ) {
 				FilterFeedTask.logger.error( `[${ this.id }] Error: no issues returned by JIRA` );
 				return;
 			}
 
-			unknownTickets = searchResults.issues.map( ( { key } ) => key );
+			unknownTickets = searchResults.data.issues.map( ( { key } ) => key );
 		} catch ( err ) {
 			FilterFeedTask.logger.error( `[${ this.id }] Error when searching for issues. ${ LoggerUtil.shortenJiraError( err ) }` );
 			return;
